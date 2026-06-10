@@ -3,11 +3,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f;
+
+    public Vector3 dir = Vector3.zero;
+
     void Update()
     {
         Vector2 inputVector = Vector2.zero;
-
         if (Keyboard.current is not null)
         {
             float h = 0;
