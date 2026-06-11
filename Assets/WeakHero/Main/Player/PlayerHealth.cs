@@ -1,15 +1,13 @@
 using UnityEngine;
-using System;
 
-public class MonsterHealth : MonoBehaviour, IDamageable
+public class PlayerHealth : MonoBehaviour, IDamageable
 {
-    [SerializeField] private float maxHp = 50f;
+    [SerializeField] private float maxHp = 200f;
+
     public float MaxHp => maxHp;
     public float CurrentHp { get; private set; }
 
-    public event Action OnDeath;
-
-    private bool isDead = false;
+    private bool isDead;
 
     private void Awake()
     {
@@ -34,12 +32,11 @@ public class MonsterHealth : MonoBehaviour, IDamageable
     public void Die()
     {
         if (isDead) return;
+
         isDead = true;
 
-        Debug.Log($"{gameObject.name}이(가) 사망했습니다.");
+        Debug.Log("플레이어 사망");
 
-        OnDeath?.Invoke();
-
-        Destroy(gameObject, 0.5f); 
+        gameObject.SetActive(false);
     }
 }

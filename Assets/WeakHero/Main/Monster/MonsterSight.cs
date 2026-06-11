@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Portfolio
+namespace Monster
 {
     public enum MonsterState
     {
@@ -29,14 +29,8 @@ namespace Portfolio
 
         MonsterState previousState;
 
-        void Update()
+        public void UpdateSight()
         {
-            if (player == null)
-            {
-                currentState = MonsterState.Idle;
-                return;
-            }
-
             Vector3 toPlayer = player.position - transform.position;
 
             float sqrDistance = toPlayer.sqrMagnitude;
@@ -44,7 +38,6 @@ namespace Portfolio
             bool inSightRange = sqrDistance <= sightRange * sightRange;
 
             Vector3 dirToPlayer = toPlayer.normalized;
-
             float dot = Vector3.Dot(transform.forward, dirToPlayer);
             float sightThreshold = Mathf.Cos(sightAngle * Mathf.Deg2Rad);
 
@@ -76,6 +69,20 @@ namespace Portfolio
                 );
             }
 
+        }
+        public MonsterState CurrentState => currentState;
+        
+        public void UpdateState()
+        {
+            Vector3 toPlayer = player.position - transform.position;
+
+            float sqrDistance = toPlayer.sqrMagnitude;
+
+            if (player == null)
+            {
+                currentState = MonsterState.Idle;
+                return;
+            }
             float attackSqr = attackDistance * attackDistance;
             float chaseSqr = chaseDistance * chaseDistance;
 
@@ -96,6 +103,13 @@ namespace Portfolio
                 Debug.Log($"{previousState} -> {currentState}");
                 previousState = currentState;
             }
+
+        }
+
+        void Update()
+        {
+            UpdateSight();
+            UpdateState();
         }
 
         private void OnDrawGizmos()

@@ -1,5 +1,3 @@
-using Portfolio;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform enemy;
 
     [SerializeField] private float weaponDamage = 5f;
-    [SerializeField] private float attackDistance = 2.5f;
+    [SerializeField] private float attackDistance = 3f;
 
     public void OnAttack()
     {
