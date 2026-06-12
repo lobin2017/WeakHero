@@ -16,7 +16,7 @@ namespace Monster
         [Header("거리")]
         [SerializeField] private float sightRange = 8f;
         [SerializeField] private float chaseDistance = 7f;
-        [SerializeField] private float attackDistance = 4f;
+        [SerializeField] private float attackDistance = 2f;
 
         [Header("시야")]
         [SerializeField] private float sightAngle = 45f;

@@ -5,7 +5,7 @@ namespace Monster
 {
     public class MonsterHealth : MonoBehaviour, IDamageable
     {
-        [SerializeField] private float maxHp = 50f;
+        [SerializeField] private float maxHp = 20f;
         public float MaxHp => maxHp;
         public float CurrentHp { get; private set; }
 
