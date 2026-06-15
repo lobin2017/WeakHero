@@ -829,7 +829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283ea8a42761e3f4786cd9441f5b6e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterHealth
-  maxHp: 50
+  maxHp: 20
 --- !u!114 &848408393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283ea8a42761e3f4786cd9441f5b6e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterHealth
-  maxHp: 50
+  maxHp: 20
 --- !u!54 &926200798
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1363,7 +1363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 283ea8a42761e3f4786cd9441f5b6e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterHealth
-  maxHp: 50
+  maxHp: 20
 --- !u!114 &1413167702
 MonoBehaviour:
   m_ObjectHideFlags: 0
