@@ -985,6 +985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 5
+  rotationSpeed: 8
 --- !u!114 &921083230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1001,7 +1002,8 @@ MonoBehaviour:
   weaponDamage: 5
   attackDistance: 3
   weaponDelay: 1
-  attackAngle: 45
+  attackAngle: 90
+  slerpSpeed: 8
 --- !u!114 &921083231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1656,9 +1658,9 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1957143040}
   - {fileID: 1193124437}
   - {fileID: 921083228}
   - {fileID: 1413167700}
   - {fileID: 848408395}
   - {fileID: 926200803}
-  - {fileID: 1957143040}

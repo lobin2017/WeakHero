@@ -4,28 +4,34 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 5f;
+
+    private PlayerInputActions inputActions;
+
+    private void Awake()
+    {
+        inputActions = new PlayerInputActions();
+    }
+
+    private void OnEnable()
+    {
+        inputActions.Player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Player.Disable();
+    }
+
     void Update()
     {
-        Vector2 inputVector = Vector2.zero;
-        if (Keyboard.current is not null)
-        {
-            float h = 0;
-            float v = 0;
+        Vector2 inputVector = inputActions.Player.Move.ReadValue<Vector2>();
 
-            if (Keyboard.current.aKey.isPressed) h = -1;
-            if (Keyboard.current.dKey.isPressed) h = 1;
-            if (Keyboard.current.wKey.isPressed) v = 1;
-            if (Keyboard.current.sKey.isPressed) v = -1;
-
-            inputVector = new Vector2(h, v);
-        }
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y).normalized;
 
-        if (moveDir.magnitude > 0)
+        if (inputVector.sqrMagnitude > 0)
         {
             transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
-            Quaternion playerLook = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, playerLook, 4f * Time.deltaTime);
         }
     }
 }
