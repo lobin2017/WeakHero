@@ -117,9 +117,6 @@ namespace Monster
             Gizmos.color = Color.violet;
             Gizmos.DrawLine(transform.position, transform.position + transform.forward * 8f);
 
-            Gizmos.color = GetStateColor();
-            Gizmos.DrawSphere(transform.position, 0.35f);
-
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, chaseDistance);
 
@@ -133,19 +130,6 @@ namespace Monster
             {
                 Gizmos.color = Color.white;
                 Gizmos.DrawLine(transform.position, player.position);
-            }
-        }
-
-        private Color GetStateColor()
-        {
-            switch (currentState)
-            {
-                case MonsterState.Chase:
-                    return Color.yellow;
-                case MonsterState.Attack:
-                    return Color.red;
-                default:
-                    return Color.gray;
             }
         }
     }

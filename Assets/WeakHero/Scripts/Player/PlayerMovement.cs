@@ -6,11 +6,13 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInputActions inputActions;
     private CharacterController controller;
+    private Animator animator;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -23,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.Disable();
     }
 
+
     void Update()
     {
         Vector2 inputVector = inputActions.Player.Move.ReadValue<Vector2>();
@@ -33,5 +36,8 @@ public class PlayerMovement : MonoBehaviour
         {
             controller.Move(moveDir * moveSpeed * Time.deltaTime);
         }
+        bool isMoving = inputVector.sqrMagnitude > 0.01f;
+        animator.SetBool("isMoving", isMoving);
+        
     }
 }

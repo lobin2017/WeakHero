@@ -10,14 +10,16 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float attackDistance = 3f;
     [SerializeField] private float weaponDelay = 1f;
     [SerializeField] private float attackAngle = 70f;
-    [SerializeField] private float slerpSpeed = 8f;
 
     private float lastWeaponAttackTime;
+    private Vector3 aimDirection;
     private PlayerInputActions inputActions;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void OnEnable()
     {
@@ -34,14 +36,18 @@ public class PlayerAttack : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            Vector3 mouseDir = hit.point - transform.position;
-            mouseDir.y = 0;
+            aimDirection = hit.point - transform.position;
+            aimDirection.y = 0;
 
-            if (mouseDir.sqrMagnitude > 0.1f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(mouseDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, slerpSpeed * Time.deltaTime);
-            }
+            aimDirection.Normalize();
+        }
+        if (aimDirection.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (aimDirection.x < 0)
+        {
+            spriteRenderer.flipX = true;
         }
     }
     private void HandleAttackInput()
@@ -60,22 +66,27 @@ public class PlayerAttack : MonoBehaviour
     {
         if (monsterManager == null || monsterManager.activeMonsters.Count == 0)
         {
-
+            
             return;
         }
         foreach (MonsterHealth monster in monsterManager.activeMonsters)
         {
-            if (monster == null) continue;
+            if (monster == null)
+            {
+                continue;
+            }
 
             Vector3 directionToMonster = monster.transform.position - transform.position;
             float distanceSqr = directionToMonster.sqrMagnitude;
             float attackRangeSqr = attackDistance * attackDistance;
 
             if (distanceSqr > attackRangeSqr)
+            {
                 continue;
+            }
 
             directionToMonster.Normalize();
-            float dot = Vector3.Dot(transform.forward, directionToMonster);
+            float dot = Vector3.Dot(aimDirection, directionToMonster);
             float cosAngle = Mathf.Cos(attackAngle * Mathf.Deg2Rad);
 
             if (dot > cosAngle)
@@ -84,7 +95,6 @@ public class PlayerAttack : MonoBehaviour
                 Debug.Log($"{monster.name} 에게 {weaponDamage} 데미지");
             }
         }
-
     }
     void Update()
     {
