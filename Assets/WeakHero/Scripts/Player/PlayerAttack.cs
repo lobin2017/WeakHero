@@ -69,12 +69,12 @@ public class PlayerAttack : MonoBehaviour
             
             return;
         }
-        foreach (MonsterHealth monster in monsterManager.activeMonsters)
+        for (int i = 0; i < monsterManager.activeMonsters.Count; i++)
         {
+            MonsterHealth monster = monsterManager.activeMonsters[i];
+
             if (monster == null)
-            {
                 continue;
-            }
 
             Vector3 directionToMonster = monster.transform.position - transform.position;
             float distanceSqr = directionToMonster.sqrMagnitude;
@@ -101,4 +101,5 @@ public class PlayerAttack : MonoBehaviour
         HandleAiming();
         HandleAttackInput();
     }
+    
 }

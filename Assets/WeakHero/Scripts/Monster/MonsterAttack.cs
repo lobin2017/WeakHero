@@ -4,7 +4,7 @@ namespace Monster
 {
     public class MonsterAttack : MonoBehaviour
     {
-        [SerializeField] private Transform player;
+        [SerializeField] public Transform player;
 
         [SerializeField] private float attackDamage = 5f;
         [SerializeField] private float attackCooldown = 2f;
@@ -15,7 +15,14 @@ namespace Monster
         private void Awake()
         {
             monsterSight = GetComponent<MonsterSight>();
-            playerHealth = player.GetComponent<PlayerHealth>();
+        }
+        public void Initialize(Transform playerTransform)
+        {
+            player = playerTransform;
+            if (player != null)
+            {
+                playerHealth = player.GetComponent<PlayerHealth>();
+            }
         }
         public void OnAttack()
         {
