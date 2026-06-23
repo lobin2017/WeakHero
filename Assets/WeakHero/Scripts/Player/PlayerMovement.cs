@@ -5,14 +5,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
 
     private PlayerInputActions inputActions;
-    private CharacterController controller;
     private Animator animator;
+    private Rigidbody2D rb;
+
+    private Vector2 moveInput;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
-        controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
@@ -28,16 +30,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Vector2 inputVector = inputActions.Player.Move.ReadValue<Vector2>();
+        moveInput = inputActions.Player.Move.ReadValue<Vector2>();
 
-        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y).normalized;
-
-        if (inputVector.sqrMagnitude > 0.01f)
-        {
-            controller.Move(moveDir * moveSpeed * Time.deltaTime);
-        }
-        bool isMoving = inputVector.sqrMagnitude > 0.01f;
+        bool isMoving = moveInput.sqrMagnitude > 0.01f;
         animator.SetBool("isMoving", isMoving);
         
+    }
+    private void FixedUpdate()
+    {
+        rb.linearVelocity = moveInput * moveSpeed;
     }
 }

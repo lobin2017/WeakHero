@@ -47,20 +47,24 @@ public class MonsterManager : MonoBehaviour
 
     public void SpawnRandomMonster()
     {
-        if (monsterPrefabs.Count == 0 || playerTransform == null) return;
+        if (monsterPrefabs.Count == 0 || playerTransform == null)
+            return;
 
         Vector3 randomPos = GetRandomSpawnPosition();
 
-        Quaternion spawnRotation = Quaternion.Euler(90f, Random.Range(0, 360f), 0);
+        GameObject prefab =
+            monsterPrefabs[Random.Range(0, monsterPrefabs.Count)];
 
-        GameObject monsterObj = Instantiate(monsterPrefabs[Random.Range(0, monsterPrefabs.Count)],
-                                           randomPos, spawnRotation);
-
-        monsterObj.transform.position += new Vector3(0, 0.6f, 0);
+        GameObject monsterObj = Instantiate(
+            prefab,
+            randomPos,
+            prefab.transform.rotation
+        );
 
         SetupMonster(monsterObj);
 
         MonsterHealth health = monsterObj.GetComponent<MonsterHealth>();
+
         if (health != null)
         {
             activeMonsters.Add(health);
@@ -87,9 +91,6 @@ public class MonsterManager : MonoBehaviour
         if (sight != null) sight.player = playerTransform;
         if (movement != null) movement.player = playerTransform;
         if (attack != null) attack.Initialize(playerTransform);
-
-        MonsterInitializer initializer = monster.AddComponent<MonsterInitializer>();
-        initializer.playerTransform = playerTransform;
     }
 
     public void RemoveMonster(MonsterHealth monster)

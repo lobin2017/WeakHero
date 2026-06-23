@@ -1,45 +1,73 @@
-using Monster;
 using UnityEngine;
 
-public class MonsterMovement : MonoBehaviour
+namespace Monster
 {
-    [SerializeField] public Transform player;
-    [SerializeField] private float moveSpeed = 3.5f;
-
-    private MonsterSight monsterSight;
-    private Animator animator;
-
-    private void Awake()
+    public class MonsterMovement : MonoBehaviour
     {
-        monsterSight = GetComponent<MonsterSight>();
-        animator = GetComponent<Animator>();
-    }
+        [SerializeField] public Transform player;
+        [SerializeField] private float moveSpeed = 3.5f;
 
-    public void OnChase()
-    {
-        if (monsterSight.CurrentState != MonsterState.Chase || player == null)
+        private MonsterSight monsterSight;
+        private Animator animator;
+        private SpriteRenderer spriteRenderer;
+
+        private void Awake()
         {
-            if (animator != null) animator.SetBool("isMoving", false);
-            return;
+            monsterSight = GetComponent<MonsterSight>();
+            animator = GetComponent<Animator>();
+
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
+            if (spriteRenderer == null)
+            {
+                spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            }
         }
 
-        Vector3 direction = player.position - transform.position;
-        Vector3 moveDir = new Vector3(direction.x, 0, direction.z).normalized;
-
-        if (moveDir.magnitude > 0.1f)
+        public void OnChase()
         {
-            transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
+            if (monsterSight.CurrentState != MonsterState.Chase || player == null)
+            {
+                if (animator != null)
+                    animator.SetBool("isMoving", false);
 
-            float targetAngle = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(90f, targetAngle, 0f);
+                return;
+            }
+
+            Vector3 direction = player.position - transform.position;
+
+            Vector3 moveDir = new Vector3(
+                direction.x,
+                0,
+                direction.z
+            ).normalized;
+
+            transform.Translate(
+                moveDir * moveSpeed * Time.deltaTime,
+                Space.World
+            );
+
+            if (spriteRenderer != null)
+            {
+                if (moveDir.x > 0)
+                {
+                    spriteRenderer.flipX = false;
+                }
+                else if (moveDir.x < 0)
+                {
+                    spriteRenderer.flipX = true;
+                }
+            }
+
+            if (animator != null)
+            {
+                animator.SetBool("isMoving", true);
+            }
         }
 
-        if (animator != null)
-            animator.SetBool("isMoving", true);
-    }
-
-    void Update()
-    {
-        OnChase();
+        private void Update()
+        {
+            OnChase();
+        }
     }
 }

@@ -12,7 +12,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float attackAngle = 70f;
 
     private float lastWeaponAttackTime;
-    private Vector3 aimDirection;
+    private Vector2 aimDirection;
     private PlayerInputActions inputActions;
     private SpriteRenderer spriteRenderer;
 
@@ -31,16 +31,10 @@ public class PlayerAttack : MonoBehaviour
     }
     private void HandleAiming()
     {
-        Vector2 mouseScreenPos = inputActions.Player.Aim.ReadValue<Vector2>();
-        Ray ray = Camera.main.ScreenPointToRay(mouseScreenPos);
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            aimDirection = hit.point - transform.position;
-            aimDirection.y = 0;
+        aimDirection = (mousePos - (Vector2)transform.position).normalized;
 
-            aimDirection.Normalize();
-        }
         if (aimDirection.x > 0)
         {
             spriteRenderer.flipX = false;
@@ -66,7 +60,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (monsterManager == null || monsterManager.activeMonsters.Count == 0)
         {
-            
+
             return;
         }
         for (int i = 0; i < monsterManager.activeMonsters.Count; i++)
@@ -76,7 +70,7 @@ public class PlayerAttack : MonoBehaviour
             if (monster == null)
                 continue;
 
-            Vector3 directionToMonster = monster.transform.position - transform.position;
+            Vector2 directionToMonster = (monster.transform.position - transform.position);
             float distanceSqr = directionToMonster.sqrMagnitude;
             float attackRangeSqr = attackDistance * attackDistance;
 
@@ -86,8 +80,8 @@ public class PlayerAttack : MonoBehaviour
             }
 
             directionToMonster.Normalize();
-            float dot = Vector3.Dot(aimDirection, directionToMonster);
-            float cosAngle = Mathf.Cos(attackAngle * Mathf.Deg2Rad);
+            float dot = Vector2.Dot(aimDirection, directionToMonster.normalized);
+            float cosAngle = Mathf.Cos((attackAngle * 0.5f) * Mathf.Deg2Rad);
 
             if (dot > cosAngle)
             {
@@ -101,5 +95,4 @@ public class PlayerAttack : MonoBehaviour
         HandleAiming();
         HandleAttackInput();
     }
-    
 }
